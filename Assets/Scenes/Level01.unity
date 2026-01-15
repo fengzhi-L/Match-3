@@ -184,10 +184,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71d3c02034a5f8c4caf59d2c9bd3cf24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridCellPrefab: {fileID: 1865469155982762235, guid: 83406a823c6eb804181e220635bbeb59, type: 3}
-  container: {fileID: 455173277}
-  cellSize: {x: 1, y: 1}
-  spacing: {x: 0, y: 0}
+  cellPrefab: {fileID: 1865469155982762235, guid: 83406a823c6eb804181e220635bbeb59, type: 3}
+  gridParent: {fileID: 0}
 --- !u!4 &455173277
 Transform:
   m_ObjectHideFlags: 0
@@ -515,6 +513,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 982675573}
+  - component: {fileID: 982675574}
   m_Layer: 0
   m_Name: FruitSpawner
   m_TagString: Untagged
@@ -537,6 +536,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 139101051}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &982675574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 982675572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baafd9e1fa741d14bbbdc2a3fbb3df09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fruitPrefabs:
+  - {fileID: 844742950482751560, guid: 22c689aaf0c7b264e95749a93f5a9cc8, type: 3}
+  - {fileID: 8569630609637734047, guid: 4c1b721209c0d3a4a8cafa08206e8d77, type: 3}
+  - {fileID: 223348329534162543, guid: 71ed664337e549f44bed22f05f4f07ad, type: 3}
+  - {fileID: 4293724048078701183, guid: db72fc96ad6200b40964aea658983b35, type: 3}
+  - {fileID: 565111665569985262, guid: 2ebf0750a4b4c144cb2ab9630fc2263d, type: 3}
+  - {fileID: 7211285826343424174, guid: ae08a906713b12742b68392e64907d71, type: 3}
+  - {fileID: 5396309372849325839, guid: 47ac7356d5377744c8bab3990684f041, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
