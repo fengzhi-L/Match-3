@@ -7,6 +7,7 @@ public class Match3 : Architecture<Match3>
         RegisterModel<IUserModel>(new UserModel());
         RegisterModel<ILevelModel>(new LevelModel());
         RegisterModel<IGameGridModel>(new GameGridModel());
+        RegisterModel<IFruitModel>(new FruitModel());
         
         RegisterSystem<IGameGridSystem>(new GameGridSystem());
     }

@@ -1,17 +1,47 @@
+using System.Collections.Generic;
 using QFramework;
 
 public class GameGridSystem : AbstractSystem, IGameGridSystem
 {
-    private GridCell[,] _grid;
     private LevelData _levelData;
-    private System.Random _random;
-
-    public int column => _levelData.gridColumn;
-    public int row => _levelData.gridRow;
     
     protected override void OnInit()
     {
-        _random = new System.Random();
+        
+    }
+
+    private void Initialize()
+    {
+        
     }
     
+    public void SpawnGrid()
+    {
+        var levelData = this.GetModel<ILevelModel>().currentLevelData;
+        var grid = this.GetModel<IGameGridModel>().currentGrid;
+        grid.Clear();
+        for (var rowIndex = 0; rowIndex < levelData.gridRow; rowIndex++)
+        {
+            var row = new List<GridCell>();
+            for (var colIndex = 0; colIndex < levelData.gridColumn; colIndex++)
+            {
+                row.Add(new GridCell(rowIndex, colIndex));
+            }
+            grid.Add(row);
+        }
+    }
+
+    public void FillGridWithCell(CellType type)
+    {
+        var grid = this.GetModel<IGameGridModel>().currentGrid;
+        foreach (var rowCells in grid)
+        {
+            foreach (var cell in rowCells)
+            {
+                cell.cellType = type;
+            }
+        }
+        
+        this.SendEvent<CellPrefabChangedEvent>();
+    }
 }

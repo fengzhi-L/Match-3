@@ -1,50 +1,96 @@
 using System.Collections.Generic;
 using QFramework;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class GameGridController : MonoBehaviour, IController
 {
-    public GameObject cellPrefab;
+    [SerializeField] private CellPrefabConfig cellPrefabConfig;
     public Transform gridParent;
+    public GameObject cellEntry;
+    
+    private List<GameObject> _pooledObjects = new();
+    private ObjectPool<GameObject> _cellPool;
+    private Dictionary<(int, int), GameObject> _cellEntrys = new();
     
     void Start()
     {
-        if (cellPrefab == null)
-        {
-            Debug.LogError("未分配 cellPrefab!");
-            return;
-        }
-
+        _cellPool = new ObjectPool<GameObject>(
+            CreatePooledItem,
+            OnTakeFromPool,
+            OnReturnedToPool,
+            OnDestroyPoolObject,
+            false,
+            100,
+            200
+        );
         if (gridParent == null)
         {
             gridParent = transform; // 默认自身为父级
         }
 
-        SpawnGrid();
+        this.RegisterEvent<CellPrefabChangedEvent>(e => { RefreshGridView(); });
+
+        this.GetSystem<IGameGridSystem>().SpawnGrid();
+        this.GetSystem<IGameGridSystem>().FillGridWithCell(CellType.BaseBlock);
     }
 
-    void SpawnGrid()
+    private GameObject CreatePooledItem()
+    {
+        var obj = Instantiate(cellEntry, gridParent);
+        obj.SetActive(false);
+        _pooledObjects.Add(obj);
+        return obj;
+    }
+
+    private void OnTakeFromPool(GameObject obj)
+    {
+        obj.SetActive(true);
+    }
+
+    private void OnReturnedToPool(GameObject obj)
+    {
+        obj.SetActive(false);
+        // 可以重置对象状态（如位置颜色动画）
+        var bhv = obj.GetComponent<CellEntry>();
+        if (bhv != null)
+        {
+            // 重置逻辑
+        }
+    }
+
+    private void OnDestroyPoolObject(GameObject obj)
+    {
+        _pooledObjects.Remove(obj);
+        Destroy(obj);
+    }
+
+    private void RefreshGridView()
     {
         var levelData = this.GetModel<ILevelModel>().currentLevelData;
         var grid = this.GetModel<IGameGridModel>().currentGrid;
-        grid.Clear();
+        
         var halfWidth = (levelData.gridColumn - 1) / 2f;
         var halfHeight = (levelData.gridRow - 1) / 2f;
 
-        for (var rowIndex = 0; rowIndex < levelData.gridRow; rowIndex++)
+        foreach (var rowCells in grid)
         {
-            var row = new List<GridCell>();
-            for (var colIndex = 0; colIndex < levelData.gridColumn; colIndex++)
+            foreach (var cell in rowCells)
             {
-                var cell = Instantiate(cellPrefab, gridParent);
+                var prefab = cellPrefabConfig.GetPrefab(cell.cellType);
+                if(prefab == null) continue;
 
-                var x = colIndex - halfWidth;
-                var y = rowIndex - halfHeight;
+                var cellItem = Instantiate(cellEntry, gridParent, false);
+                var bhv = cellItem.GetComponent<CellEntry>();
+                var x = cell.colIndex - halfWidth;
+                var y = cell.rowIndex - halfHeight;
+                var targetPos = new Vector3(x, y, 0);
+                bhv.Initialize(cellPrefabConfig.GetPrefabMap());
+                bhv.SetCellType(cell.cellType);
+                bhv.SetPosition(cell.rowIndex, cell.colIndex, targetPos);
 
-                cell.transform.localPosition = new Vector3(x, y, 0);
-                row.Add(new GridCell(cellPrefab, rowIndex, colIndex));
+                cellItem.transform.transform.localPosition = new Vector3(x, y, 0);
             }
-            grid.Add(row);
         }
     }
     

@@ -4,13 +4,19 @@ using UnityEngine;
 [Serializable]
 public class GridCell
 {
-    public GameObject cellBg;
+    public CellType cellType;
     public int rowIndex;
     public int colIndex;
 
-    public GridCell(GameObject bg, int row, int col)
+    public GridCell(CellType type, int row, int col)
     {
-        cellBg = bg;
+        cellType = type;
+        rowIndex = row;
+        colIndex = col;
+    }
+
+    public GridCell(int row, int col)
+    {
         rowIndex = row;
         colIndex = col;
     }
