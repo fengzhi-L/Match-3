@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using QFramework;
 using UnityEngine;
 
@@ -24,21 +25,26 @@ public class GameGridController : MonoBehaviour, IController
 
     void SpawnGrid()
     {
-        var levelData = this.GetModel<ILevelModel>().GetCurrentLevelData();
-        var halfWidth = (levelData.gridWidth - 1) / 2f;
-        var halfHeight = (levelData.gridHeight - 1) / 2f;
+        var levelData = this.GetModel<ILevelModel>().currentLevelData;
+        var grid = this.GetModel<IGameGridModel>().currentGrid;
+        grid.Clear();
+        var halfWidth = (levelData.gridColumn - 1) / 2f;
+        var halfHeight = (levelData.gridRow - 1) / 2f;
 
-        for (var row = 0; row < levelData.gridHeight; row++)
+        for (var rowIndex = 0; rowIndex < levelData.gridRow; rowIndex++)
         {
-            for (var col = 0; col < levelData.gridWidth; col++)
+            var row = new List<GridCell>();
+            for (var colIndex = 0; colIndex < levelData.gridColumn; colIndex++)
             {
                 var cell = Instantiate(cellPrefab, gridParent);
 
-                var x = col - halfWidth;
-                var y = row - halfHeight;
+                var x = colIndex - halfWidth;
+                var y = rowIndex - halfHeight;
 
                 cell.transform.localPosition = new Vector3(x, y, 0);
+                row.Add(new GridCell(cellPrefab, rowIndex, colIndex));
             }
+            grid.Add(row);
         }
     }
     

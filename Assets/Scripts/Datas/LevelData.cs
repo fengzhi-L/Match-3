@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Level_01", menuName = "Game/Level Data", order = 1)]
@@ -8,9 +9,11 @@ public class LevelData : ScriptableObject
     public int levelNumber = 1;
     public string levelName = "Level_01";
 
-    [Header("棋盘设置")] [Range(4, 12)] 
-    public int gridWidth = 8;
-    [Range(4, 12)] public int gridHeight = 8;
+    [Header("棋盘设置")] 
+    [Range(4, 12)] 
+    public int gridColumn = 8;
+    [Range(4, 12)] 
+    public int gridRow = 8;
 
     [Header("游戏目标")] 
     public int targetScore = 1000;

@@ -1,8 +1,8 @@
-﻿using QFramework;
+﻿using System.Collections.Generic;
+using QFramework;
 
 public interface IGameGridModel: IModel
 {
-    GridCell[,] GetCurrentGrid();
-    void SetCurrentGrid(int width, int height);
-    
+    List<List<GridCell>> currentGrid { get; set; }
+    List<List<FruitItem>> currentFruitGrid { get; set; }
 }

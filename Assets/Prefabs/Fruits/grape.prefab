@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2336326161055593138}
   - component: {fileID: 1516242538725967550}
   m_Layer: 0
-  m_Name: grape
+  m_Name: Grape
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

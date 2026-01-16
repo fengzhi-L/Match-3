@@ -1,35 +1,45 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FruitItem : MonoBehaviour
 {
-
     public int rowIndex;
     public int columIndex;
-    public int fruitType;
-    public GameObject fruitSprite;
+    public FruitType fruitType;
+    public GameObject fruitPrefab;
     private Transform _selfTransform;
+    private Dictionary<FruitType, GameObject> _prefabs;
 
     private void Awake()
     {
         _selfTransform = transform;
     }
-    
-    public void CreateFruitBg(int type, GameObject prefab)
+
+    public void Initialize(Dictionary<FruitType, GameObject> prefabs)
     {
-        if (null != fruitSprite) return;
-        fruitType = type;
-        fruitSprite = Instantiate(prefab, _selfTransform, false);
+        _prefabs = prefabs;
     }
-    
-    public void UpdatePosition(int row, int column, LevelData levelData)
+
+    public void SetFruitType(FruitType type)
+    {
+        fruitType = type;
+        if (_prefabs != null && _prefabs.TryGetValue(type, out var prefab))
+        {
+            fruitPrefab = _prefabs.GetValueOrDefault(type);
+            Instantiate(fruitPrefab, _selfTransform, false);
+            gameObject.name = $"Fruit_{type}";
+        }
+        else
+        {
+            Debug.LogWarning($"[FruitItem] 没有找到{type}的预制体");
+        }
+    }
+
+    public void SetPosition(int row, int column, Vector3 position)
     {
         rowIndex = row;
         columIndex = column;
-        var halfWidth = (levelData.gridWidth - 1) / 2f;
-        var halfHeight = (levelData.gridHeight - 1) / 2f;
-        var x = column - halfWidth;
-        var y = row - halfHeight;
-        var targetPos = new Vector3(x, y, 0);
-        _selfTransform.localPosition = targetPos;
+        _selfTransform.localPosition = position;
     }
 }

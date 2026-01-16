@@ -195,7 +195,7 @@ Transform:
   m_GameObject: {fileID: 455173275}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -530,7 +530,7 @@ Transform:
   m_GameObject: {fileID: 982675572}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -548,14 +548,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baafd9e1fa741d14bbbdc2a3fbb3df09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fruitPrefabs:
-  - {fileID: 844742950482751560, guid: 22c689aaf0c7b264e95749a93f5a9cc8, type: 3}
-  - {fileID: 8569630609637734047, guid: 4c1b721209c0d3a4a8cafa08206e8d77, type: 3}
-  - {fileID: 223348329534162543, guid: 71ed664337e549f44bed22f05f4f07ad, type: 3}
-  - {fileID: 4293724048078701183, guid: db72fc96ad6200b40964aea658983b35, type: 3}
-  - {fileID: 565111665569985262, guid: 2ebf0750a4b4c144cb2ab9630fc2263d, type: 3}
-  - {fileID: 7211285826343424174, guid: ae08a906713b12742b68392e64907d71, type: 3}
-  - {fileID: 5396309372849325839, guid: 47ac7356d5377744c8bab3990684f041, type: 3}
+  prefabConfig: {fileID: 11400000, guid: 6fb7be220e2504844ab185bf23a45308, type: 2}
+  fruitItem: {fileID: 9164976983386106127, guid: d96ce0ab9290db14197d665ea10e125c, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
