@@ -1,5 +1,6 @@
 using QFramework;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LoginController : MonoBehaviour, IController
 {
@@ -13,6 +14,12 @@ public class LoginController : MonoBehaviour, IController
     void Update()
     {
         
+    }
+
+    public void OnGuestButtonClicked()
+    {
+        this.GetModel<IUserModel>().InitializeAsGuest();
+        SceneManager.LoadScene(1);
     }
 
     public IArchitecture GetArchitecture()

@@ -3,8 +3,8 @@ using QFramework;
 
 public class GameGridModel : AbstractModel, IGameGridModel
 {
-    public List<List<GridCell>> currentGrid { get; set; }
-    public List<List<FruitItem>> currentFruitGrid { get; set; }
+    public List<List<GridCell>> currentGrid { get; private set; }
+    public List<List<FruitItem>> currentFruitGrid { get; private set; }
 
     protected override void OnInit()
     {

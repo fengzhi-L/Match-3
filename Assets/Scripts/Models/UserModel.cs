@@ -7,7 +7,7 @@ public class UserModel : AbstractModel,IUserModel
     public string userId { get; set; }
     public string displayName { get; set; }
     public bool isGuest { get; set; }
-    public int currentLevel { get; set; }
+    public BindableProperty<int> currentLevel { get; } = new(1);
     public int totalScore { get; set; }
     public Dictionary<string, int> inventory { get; set; }
 
@@ -16,7 +16,11 @@ public class UserModel : AbstractModel,IUserModel
         userId = "";
         displayName = "玩家";
         isGuest = true;
-        currentLevel = 1;
+        // currentLevel.Register(level =>
+        // {
+        //     this.SendEvent<CurrentLevelChangedEvent>(new (){ Level = level});
+        // });
+        currentLevel.Value = 0;
         totalScore = 0;
         inventory = new();
     }
@@ -36,13 +40,13 @@ public class UserModel : AbstractModel,IUserModel
     private void LoadLocalData()
     {
         // 从 PlayerPrefs 或本地文件加载
-        currentLevel = PlayerPrefs.GetInt("CurrentLevel", 1);
+        currentLevel.Value = PlayerPrefs.GetInt("CurrentLevel", 1);
         totalScore = PlayerPrefs.GetInt("TotalScore", 0);
     }
 
     public void SaveToLocal()
     {
-        PlayerPrefs.SetInt("CurrentLevel", currentLevel);
+        PlayerPrefs.SetInt("CurrentLevel", currentLevel.Value);
         PlayerPrefs.SetInt("TotalScore", totalScore);
         PlayerPrefs.Save();
     }

@@ -3,6 +3,6 @@ using QFramework;
 
 public interface IGameGridModel: IModel
 {
-    List<List<GridCell>> currentGrid { get; set; }
-    List<List<FruitItem>> currentFruitGrid { get; set; }
+    List<List<GridCell>> currentGrid { get;}
+    List<List<FruitItem>> currentFruitGrid { get; }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using QFramework;
+using UnityEngine;
 
 public class GameGridSystem : AbstractSystem, IGameGridSystem
 {
@@ -7,7 +8,11 @@ public class GameGridSystem : AbstractSystem, IGameGridSystem
     
     protected override void OnInit()
     {
-        
+        this.GetModel<IUserModel>().currentLevel.Register(level =>
+        {
+            SpawnGrid();
+            FillGridWithCell(CellType.BaseBlock);
+        });
     }
 
     private void Initialize()
@@ -17,6 +22,9 @@ public class GameGridSystem : AbstractSystem, IGameGridSystem
     
     public void SpawnGrid()
     {
+        var currentLevel = this.GetModel<IUserModel>().currentLevel.Value;
+        Debug.Log(currentLevel);
+        this.GetModel<ILevelModel>().SetLevelData(currentLevel);
         var levelData = this.GetModel<ILevelModel>().currentLevelData;
         var grid = this.GetModel<IGameGridModel>().currentGrid;
         grid.Clear();
@@ -41,6 +49,7 @@ public class GameGridSystem : AbstractSystem, IGameGridSystem
                 cell.cellType = type;
             }
         }
+        Debug.Log("13");
         
         this.SendEvent<CellPrefabChangedEvent>();
     }

@@ -31,8 +31,8 @@ public class GameGridController : MonoBehaviour, IController
 
         this.RegisterEvent<CellPrefabChangedEvent>(e => { RefreshGridView(); });
 
-        this.GetSystem<IGameGridSystem>().SpawnGrid();
-        this.GetSystem<IGameGridSystem>().FillGridWithCell(CellType.BaseBlock);
+        //this.GetSystem<IGameGridSystem>().SpawnGrid();
+        //this.GetSystem<IGameGridSystem>().FillGridWithCell(CellType.BaseBlock);
     }
 
     private GameObject CreatePooledItem()
@@ -67,6 +67,7 @@ public class GameGridController : MonoBehaviour, IController
 
     private void RefreshGridView()
     {
+        Debug.Log("RefreshGridView");
         var levelData = this.GetModel<ILevelModel>().currentLevelData;
         var grid = this.GetModel<IGameGridModel>().currentGrid;
         
@@ -93,7 +94,12 @@ public class GameGridController : MonoBehaviour, IController
             }
         }
     }
-    
+
+    public void OnClick123()
+    {
+        this.GetModel<IUserModel>().currentLevel.Value = 2;
+    }
+
     public IArchitecture GetArchitecture()
     {
         return Match3.Interface;
