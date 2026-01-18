@@ -30,9 +30,8 @@ public class GameGridController : MonoBehaviour, IController
         }
 
         this.RegisterEvent<CellPrefabChangedEvent>(e => { RefreshGridView(); });
-
-        this.GetSystem<IGameGridSystem>().SpawnGrid();
-        this.GetSystem<IGameGridSystem>().FillGridWithCell(CellType.BaseBlock);
+        
+        RefreshGridView();
     }
 
     private GameObject CreatePooledItem()
