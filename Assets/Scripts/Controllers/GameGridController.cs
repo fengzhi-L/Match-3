@@ -31,8 +31,8 @@ public class GameGridController : MonoBehaviour, IController
 
         this.RegisterEvent<CellPrefabChangedEvent>(e => { RefreshGridView(); });
 
-        //this.GetSystem<IGameGridSystem>().SpawnGrid();
-        //this.GetSystem<IGameGridSystem>().FillGridWithCell(CellType.BaseBlock);
+        this.GetSystem<IGameGridSystem>().SpawnGrid();
+        this.GetSystem<IGameGridSystem>().FillGridWithCell(CellType.BaseBlock);
     }
 
     private GameObject CreatePooledItem()
@@ -90,14 +90,20 @@ public class GameGridController : MonoBehaviour, IController
                 bhv.SetCellType(cell.cellType);
                 bhv.SetPosition(cell.rowIndex, cell.colIndex, targetPos);
 
-                cellItem.transform.transform.localPosition = new Vector3(x, y, 0);
+                cellItem.transform.localPosition = new Vector3(x, y, 0);
             }
         }
     }
 
     public void OnClick123()
     {
-        this.GetModel<IUserModel>().currentLevel.Value = 2;
+        foreach (var row in this.GetModel<IGameGridModel>().currentFruitGrid)
+        {
+            foreach (var fruit in row)
+            {
+                Debug.Log(fruit.fruitType.ToString());
+            }
+        }
     }
 
     public IArchitecture GetArchitecture()

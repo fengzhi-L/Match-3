@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [CreateAssetMenu(fileName = "Level_01", menuName = "Game/Level Data", order = 1)]
 public class LevelData : ScriptableObject
@@ -54,5 +55,11 @@ public class LevelData : ScriptableObject
         }
 
         return true;
+    }
+
+    public FruitType GetRandomFruitType()
+    {
+        var randomIndex = Random.Range(0, availableFruits.Length);
+        return availableFruits[randomIndex];
     }
 }
