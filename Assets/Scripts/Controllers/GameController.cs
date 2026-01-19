@@ -56,8 +56,8 @@ public class GameController : MonoBehaviour, IController
         (a.rowIndex, b.rowIndex) = (b.rowIndex, a.rowIndex);
         (a.columnIndex, b.columnIndex) = (b.columnIndex, a.columnIndex);
         
-        a.SetPosition(a.rowIndex, a.columnIndex, GetTargetPosition(a.rowIndex, a.columnIndex));
-        b.SetPosition(b.rowIndex, b.columnIndex, GetTargetPosition(b.rowIndex, b.columnIndex));
+        a.SetPosition(a.rowIndex, a.columnIndex, GetTargetPosition(a.rowIndex, a.columnIndex), true);
+        b.SetPosition(b.rowIndex, b.columnIndex, GetTargetPosition(b.rowIndex, b.columnIndex), true);
 
         this.GetModel<IFruitModel>().currentSelectedFruit = null;
     }

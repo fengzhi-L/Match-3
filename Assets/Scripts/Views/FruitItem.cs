@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class FruitItem : MonoBehaviour
@@ -36,10 +36,17 @@ public class FruitItem : MonoBehaviour
         }
     }
 
-    public void SetPosition(int row, int column, Vector3 position)
+    public void SetPosition(int row, int column, Vector3 position, bool dotween = false)
     {
         rowIndex = row;
         columnIndex = column;
-        _selfTransform.localPosition = position;
+        if (dotween)
+        {
+            _selfTransform.DOLocalMove(position, 0.3f);
+        }
+        else
+        {
+            _selfTransform.localPosition = position;
+        }
     }
 }
