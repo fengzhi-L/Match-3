@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using QFramework;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class FruitSpawner : MonoBehaviour, IController
 {
@@ -26,12 +23,15 @@ public class FruitSpawner : MonoBehaviour, IController
     {
         var levelData = this.GetModel<ILevelModel>().currentLevelData;
         var grid = this.GetModel<IGameGridModel>().currentFruitGrid;
+        var fruitGrid = this.GetModel<IFruitModel>().fruitGrid;
+        fruitGrid.Clear();
         
         var halfWidth = (levelData.gridColumn - 1) / 2f;
         var halfHeight = (levelData.gridRow - 1) / 2f;
 
         foreach (var rowCells in grid)
         {
+            var row = new List<FruitItem>();
             foreach (var fruitCell in rowCells)
             {
                 var prefab = prefabConfig.GetPrefab(fruitCell.fruitType);
@@ -47,7 +47,9 @@ public class FruitSpawner : MonoBehaviour, IController
                 bhv.SetPosition(fruitCell.rowIndex, fruitCell.colIndex, targetPos);
 
                 cellItem.transform.localPosition = new Vector3(x, y, 0);
+                row.Add(bhv);
             }
+            fruitGrid.Add(row);
         }
     }
 

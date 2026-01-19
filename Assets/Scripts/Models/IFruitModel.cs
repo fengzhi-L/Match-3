@@ -6,4 +6,5 @@ using UnityEngine;
 public interface IFruitModel : IModel
 {
     FruitItem currentSelectedFruit { get; set; }
+    List<List<FruitItem>> fruitGrid { get; set; }
 }

@@ -6,9 +6,11 @@ using UnityEngine;
 public class FruitModel : AbstractModel, IFruitModel
 {
     public FruitItem currentSelectedFruit { get; set; }
+    public List<List<FruitItem>> fruitGrid { get; set; }
     
     protected override void OnInit()
     {
         currentSelectedFruit = null;
+        fruitGrid = new();
     }
 }

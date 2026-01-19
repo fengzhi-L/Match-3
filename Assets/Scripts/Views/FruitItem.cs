@@ -5,7 +5,7 @@ using UnityEngine;
 public class FruitItem : MonoBehaviour
 {
     public int rowIndex;
-    public int columIndex;
+    public int columnIndex;
     public FruitType fruitType;
     public GameObject fruitPrefab;
     private Transform _selfTransform;
@@ -39,7 +39,7 @@ public class FruitItem : MonoBehaviour
     public void SetPosition(int row, int column, Vector3 position)
     {
         rowIndex = row;
-        columIndex = column;
+        columnIndex = column;
         _selfTransform.localPosition = position;
     }
 }
