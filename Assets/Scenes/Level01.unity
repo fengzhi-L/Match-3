@@ -795,7 +795,7 @@ Transform:
   m_GameObject: {fileID: 752445883}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -3}
+  m_LocalPosition: {x: 0, y: 0, z: -7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -814,6 +814,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fruitClearPrefab: {fileID: 8922596099723636206, guid: 62d439db591de5c4a9eb8c6c85d26fac, type: 3}
+  scoreEffectPrefab: {fileID: 8036531062083417771, guid: 24a81bf04d9b9df49a6b3bf1eff08519, type: 3}
 --- !u!1 &835223960
 GameObject:
   m_ObjectHideFlags: 0
