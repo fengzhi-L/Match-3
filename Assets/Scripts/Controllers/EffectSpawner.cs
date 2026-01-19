@@ -1,79 +1,82 @@
-using System;
 using System.Collections.Generic;
 using QFramework;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class EffectSpawner : MonoBehaviour, IController
 {
     public GameObject fruitClearPrefab;
     public GameObject scoreEffectPrefab;
-
-    private Queue<GameObject> _fruitClearPrefabPool = new();
-    private Queue<TextMeshPro> _scoreEffectPool = new();
+    
+    private ObjectPool<GameObject> _fruitClearPool;
+    private ObjectPool<TextMeshPro> _scoreTextPool;
     private Transform _effectRoot;
 
     private void Start()
     {
         _effectRoot = transform;
 
+        _fruitClearPool = new ObjectPool<GameObject>(
+            createFunc: CreateFruitClearEffect,
+            actionOnGet: obj => obj.SetActive(true),
+            actionOnRelease: obj => obj.SetActive(false),
+            collectionCheck: true,
+            defaultCapacity: 10,
+            maxSize: 100
+        );
+
+        _scoreTextPool = new ObjectPool<TextMeshPro>(
+            createFunc: CreateScoreEffect,
+            actionOnGet: tmp => tmp.gameObject.SetActive(true),
+            actionOnRelease: tmp => tmp.gameObject.SetActive(false),
+            collectionCheck: true,
+            defaultCapacity: 10,
+            maxSize: 100
+        );
+
         this.RegisterEvent<FruitCrushEvent>(e => { OnShowFruitClearEffect(e.Position); });
         this.RegisterEvent<GetScoreEvent>(e => { OnShowScoreEffect(e.Position, e.Score); });
     }
 
-    public void OnShowFruitClearEffect(Vector3 position)
+    private GameObject CreateFruitClearEffect()
     {
-        GameObject obj;
-        if (_fruitClearPrefabPool.Count > 0)
-        {
-            obj = _fruitClearPrefabPool.Dequeue();
-        }
-        else
-        {
-            obj = Instantiate(fruitClearPrefab, _effectRoot, false);
+        var obj = Instantiate(fruitClearPrefab, _effectRoot, false);
+        var animController = obj.GetComponent<AnimationController>();
+        animController.OnAnimationFinished += () => _fruitClearPool.Release(obj);
+        obj.SetActive(false);
+        return obj;
+    }
 
-            var bhv = obj.GetComponent<AnimationController>();
-            bhv.animEventCallback = (str) =>
-            {
-                if (str == "finish")
-                {
-                    obj.SetActive(false);
-                    _fruitClearPrefabPool.Enqueue(obj);
-                }
-            };
-        }
-        
-        obj.SetActive(true);
+    private TextMeshPro CreateScoreEffect()
+    {
+        var obj = Instantiate(scoreEffectPrefab, _effectRoot, false);
+        var tmp = obj.GetComponent<TextMeshPro>();
+        var animController = obj.GetComponent<AnimationController>();
+        animController.OnAnimationFinished += () => _scoreTextPool.Release(tmp);
+        obj.SetActive(false);
+        return tmp;
+    }
+
+    private void OnShowFruitClearEffect(Vector3 position)
+    {
+        var obj = _fruitClearPool.Get();
         obj.transform.position = new Vector3(position.x, position.y, _effectRoot.transform.position.z);
     }
 
-    public void OnShowScoreEffect(Vector3 position, int score)
+    private void OnShowScoreEffect(Vector3 position, int score)
     {
-        TextMeshPro textMeshPro = null;
-        if (_scoreEffectPool.Count > 0)
-        {
-            textMeshPro = _scoreEffectPool.Dequeue();
-        }
-        else
-        {
-            var obj = Instantiate(scoreEffectPrefab, _effectRoot, false);
-            textMeshPro = obj.GetComponent<TextMeshPro>();
-            var animController = obj.GetComponent<AnimationController>();
-            animController.animEventCallback = (str) =>
-            {
-                if (str == "finish")
-                {
-                    obj.SetActive(false);
-                    _scoreEffectPool.Enqueue(textMeshPro);
-                }
-            };
-        }
-        
-        textMeshPro.gameObject.SetActive(true);
-        textMeshPro.transform.position = new Vector3(position.x, position.y, _effectRoot.transform.position.z);
-        textMeshPro.text = score.ToString();
+        var tmp = _scoreTextPool.Get();
+        tmp.transform.position = new Vector3(position.x, position.y, _effectRoot.transform.position.z);
+        tmp.text = score.ToString();
     }
-    
+
+    private void OnDestroy()
+    {
+        _fruitClearPool?.Dispose();
+        _scoreTextPool?.Dispose();
+    }
+
     public IArchitecture GetArchitecture()
     {
         return Match3.Interface;

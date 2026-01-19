@@ -1,18 +1,15 @@
 using System;
-using QFramework;
 using UnityEngine;
 
-public class AnimationController : MonoBehaviour, IController
+public class AnimationController : MonoBehaviour
 {
-    public Action<string> animEventCallback;
+    public Action OnAnimationFinished;
     
     public void OnAnimationFinishEvent(string str)
     {
-        if (animEventCallback != null) animEventCallback(str);
-    }
-    
-    public IArchitecture GetArchitecture()
-    {
-        return Match3.Interface;
+        if (str == "finish")
+        {
+            OnAnimationFinished?.Invoke();
+        }
     }
 }
