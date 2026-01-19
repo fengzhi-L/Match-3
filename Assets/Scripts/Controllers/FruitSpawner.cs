@@ -65,10 +65,11 @@ public class FruitSpawner : MonoBehaviour, IController
         var bhv = cellItem.GetComponent<FruitItem>();
         var x = column - halfWidth;
         var y = row - halfHeight;
+        bhv.transform.localPosition = new Vector3(x, y + 2, 0);
         var targetPos = new Vector3(x, y, 0);
         bhv.Initialize(prefabConfig.GetPrefabMap());
         bhv.SetFruitType(levelData.GetRandomFruitType());
-        bhv.SetPosition(row, column, targetPos);
+        bhv.SetPosition(row, column, targetPos, true);
 
         this.GetModel<IFruitModel>().newFruit = bhv;
     }
