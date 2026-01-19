@@ -17,6 +17,8 @@ public class FruitSpawner : MonoBehaviour, IController
     private void Start()
     {
         RefreshGridView();
+
+        this.RegisterEvent<GenerateFruitEvent>(e => { GenerateFruitItem(e.Row, e.Column); });
     }
 
     private void RefreshGridView()
@@ -51,6 +53,24 @@ public class FruitSpawner : MonoBehaviour, IController
             }
             fruitGrid.Add(row);
         }
+    }
+    
+    private void GenerateFruitItem(int row, int column)
+    {
+        var levelData = this.GetModel<ILevelModel>().currentLevelData;
+        var halfWidth = (levelData.gridColumn - 1) / 2f;
+        var halfHeight = (levelData.gridRow - 1) / 2f;
+        
+        var cellItem = Instantiate(fruitItem, _fruitRoot, false);
+        var bhv = cellItem.GetComponent<FruitItem>();
+        var x = column - halfWidth;
+        var y = row - halfHeight;
+        var targetPos = new Vector3(x, y, 0);
+        bhv.Initialize(prefabConfig.GetPrefabMap());
+        bhv.SetFruitType(levelData.GetRandomFruitType());
+        bhv.SetPosition(row, column, targetPos);
+
+        this.GetModel<IFruitModel>().newFruit = bhv;
     }
 
     public IArchitecture GetArchitecture()
