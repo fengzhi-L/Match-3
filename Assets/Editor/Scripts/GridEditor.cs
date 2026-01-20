@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -125,10 +126,9 @@ public class GridEditor : EditorWindow
         GUILayout.Label("3. 拖拽到LevelData的predefinedGrid字段中");
         EditorGUILayout.EndVertical();
 
-        // 复制按钮
-        if (GUILayout.Button("生成网格资源"))
+        if (GUILayout.Button("导出JSON到StreamingAssets"))
         {
-            GenerateGridResource();
+            ExportAsJsonToStreamingAssets();
         }
     }
 
@@ -232,8 +232,8 @@ public class GridEditor : EditorWindow
     private void GenerateGridResource()
     {
         // 创建一个临时的ScriptableObject来存储网格数据
-        var gridContainer = ScriptableObject.CreateInstance<GridDataContainer>();
-        gridContainer.gridData = gridData;
+        var gridContainer = CreateInstance<GridData>();
+        gridContainer.Grid = gridData;
         
         // 保存资源
         string assetPath = EditorUtility.SaveFilePanelInProject(
@@ -251,7 +251,7 @@ public class GridEditor : EditorWindow
             Debug.Log($"网格资源已保存到: {assetPath}");
             
             // 选中刚创建的资源
-            var createdAsset = AssetDatabase.LoadAssetAtPath<GridDataContainer>(assetPath);
+            var createdAsset = AssetDatabase.LoadAssetAtPath<GridData>(assetPath);
             Selection.activeObject = createdAsset;
         }
     }
@@ -284,10 +284,32 @@ public class GridEditor : EditorWindow
         result.Apply();
         return result;
     }
+    
+    private void ExportAsJsonToStreamingAssets()
+    {
+        string fileName = EditorUtility.SaveFilePanel(
+            "导出网格数据",
+            Application.streamingAssetsPath + "/GridData/",
+            "GridData.json",
+            "json"
+        );
+    
+        if (!string.IsNullOrEmpty(fileName))
+        {
+            // 提取文件名（不含路径）
+            string nameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+        
+            // 确保目录存在
+            string directory = Path.GetDirectoryName(fileName);
+            System.IO.Directory.CreateDirectory(directory);
+        
+            // 保存数据
+            LevelGridLoader.SaveGridToJson(gridData, gridRows, gridCols, nameWithoutExtension);
+        
+            AssetDatabase.Refresh();
+            Debug.Log($"网格数据已导出到: {fileName}");
+        }
+    }
 
 }
 
-public class GridDataContainer : ScriptableObject
-{
-    public List<List<GridCell>> gridData = new List<List<GridCell>>();
-}
