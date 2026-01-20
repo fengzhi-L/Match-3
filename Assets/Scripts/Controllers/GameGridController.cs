@@ -94,17 +94,6 @@ public class GameGridController : MonoBehaviour, IController
         }
     }
 
-    public void OnClick123()
-    {
-        foreach (var row in this.GetModel<IGameGridModel>().currentFruitGrid)
-        {
-            foreach (var fruit in row)
-            {
-                Debug.Log(fruit.fruitType.ToString());
-            }
-        }
-    }
-
     public IArchitecture GetArchitecture()
     {
         return Match3.Interface;
