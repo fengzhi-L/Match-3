@@ -2418,6 +2418,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efccde62e6776654e98f9804d91de3bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  screenParent: {fileID: 0}
+  scoreParent: {fileID: 0}
+  loseText: {fileID: 97025809}
+  scoreText: {fileID: 884011736}
+  stars: []
 --- !u!1 &1179063018
 GameObject:
   m_ObjectHideFlags: 0
