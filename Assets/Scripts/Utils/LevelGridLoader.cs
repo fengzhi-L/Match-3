@@ -9,7 +9,8 @@ public static class LevelGridLoader
     
     public static List<List<GridCell>> LoadConfig(string gridPath)
     {
-        string path = Path.Combine(Application.streamingAssetsPath, gridPath);
+        string path = Path.Combine(Application.streamingAssetsPath, "GridData", gridPath);
+        Debug.Log(path);
         
 #if UNITY_ANDROID && !UNITY_EDITOR
             // 使用UnityWebRequest加载

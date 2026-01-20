@@ -352,7 +352,7 @@ public class GridEditor : EditorWindow
             string directory1= Application.streamingAssetsPath + "/GridData/";
             Directory.CreateDirectory(directory1);
         
-            string filePath = Path.Combine(directory1, $"{fileName}.json");
+            string filePath = Path.Combine(directory1, $"{fileName}");
             File.WriteAllText(filePath, json);
             Debug.Log($"网格数据已保存到: {filePath}");
         
