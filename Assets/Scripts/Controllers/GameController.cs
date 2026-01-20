@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using QFramework;
@@ -7,6 +8,12 @@ public class GameController : MonoBehaviour, IController
 {
     private List<List<FruitItem>> _fruitGrid;
     private LevelData _currentLevel;
+
+    private void Awake()
+    {
+        this.SendCommand<LoadLevelCommand>();
+    }
+
     private void Start()
     {
         _fruitGrid = this.GetModel<IFruitModel>().fruitGrid;

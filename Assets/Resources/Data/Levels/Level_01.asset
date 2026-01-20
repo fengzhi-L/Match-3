@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelNumber: 1
   levelName: Level_01
-  gridWidth: 8
-  gridHeight: 8
+  gridColumn: 8
+  gridRow: 8
   targetScore: 1000
   movesLimit: 30
   availableFruits: 0000000001000000020000000300000004000000
-  targetFruitCounts: 
+  targetFruitCounts: 32000000
   hasObstacles: 0
