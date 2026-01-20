@@ -61,13 +61,13 @@ public class EffectSpawner : MonoBehaviour, IController
     private void OnShowFruitClearEffect(Vector3 position)
     {
         var obj = _fruitClearPool.Get();
-        obj.transform.position = new Vector3(position.x, position.y, _effectRoot.transform.position.z);
+        obj.transform.localPosition = position;
     }
 
     private void OnShowScoreEffect(Vector3 position, int score)
     {
         var tmp = _scoreTextPool.Get();
-        tmp.transform.position = new Vector3(position.x, position.y, _effectRoot.transform.position.z);
+        tmp.transform.localPosition = position;
         tmp.text = score.ToString();
     }
 
