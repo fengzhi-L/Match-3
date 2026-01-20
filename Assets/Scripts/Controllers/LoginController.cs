@@ -21,6 +21,18 @@ public class LoginController : MonoBehaviour, IController
         this.GetModel<IUserModel>().InitializeAsGuest();
         SceneManager.LoadScene(1);
     }
+    
+    public void OnGoogleButtonClicked()
+    {
+        var a = LevelGridLoader.LoadConfig("Level_01_Grid.json");
+        foreach (var b in a)
+        {
+            foreach (var c in b)
+            {
+                Debug.Log(c.cellType);
+            }
+        }
+    }
 
     public IArchitecture GetArchitecture()
     {
