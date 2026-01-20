@@ -182,7 +182,7 @@ public class GameController : MonoBehaviour, IController
                 Destroy(item.gameObject);
                 _fruitGrid[item.rowIndex][item.columnIndex] = null;
                 
-                this.SendCommand(new FruitCrushCommand(item.transform.localPosition));
+                this.SendCommand(new FruitCrushCommand(item.fruitType, item.transform.localPosition));
                 this.SendCommand(new GetScoreCommand(item.transform.localPosition, 10)); // 写死10分
             }
 
