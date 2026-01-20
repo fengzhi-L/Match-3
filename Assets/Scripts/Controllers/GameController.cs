@@ -70,6 +70,7 @@ public class GameController : MonoBehaviour, IController
         }
         else
         {
+            this.SendCommand<FruitMoveSuccessCommand>();
             yield return StartCoroutine(ProcessCrush());
         }
 

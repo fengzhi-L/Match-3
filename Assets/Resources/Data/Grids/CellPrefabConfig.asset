@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellPrefabs:
   - cellType: 0
+    prefab: {fileID: 0}
+  - cellType: 1
     prefab: {fileID: 7595203708638175524, guid: d09430b5fa58ace40aabd1ce66631014, type: 3}

@@ -12,7 +12,7 @@ public class LevelModel : AbstractModel, ILevelModel
 
     public void SetLevelData(int level)
     {
-        Debug.Log(level);
+        Debug.Log($"当前关卡{level}");
         currentLevelData = Resources.Load<LevelCollection>($"Data/Levels/LevelCollection").levels[level-1];
     }
     
