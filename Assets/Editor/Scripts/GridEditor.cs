@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -65,6 +66,11 @@ public class GridEditor : EditorWindow
     private void OnGUI()
     {
         GUILayout.Label("简单网格编辑器", EditorStyles.boldLabel);
+        
+        if (GUILayout.Button("序列化测试"))
+        {
+            TestJson();
+        }
         
         // 网格尺寸设置
         EditorGUILayout.BeginVertical("Box");
@@ -134,16 +140,31 @@ public class GridEditor : EditorWindow
 
     private void DrawGrid()
     {
+        // 定义颜色映射
+        Dictionary<CellType, Color> colorMap = new Dictionary<CellType, Color>
+        {
+            { CellType.BaseBlock, Color.green },
+            { CellType.Empty, Color.red }
+        };
+        
+        GUIStyle cellStyle = new GUIStyle(GUI.skin.button);
+        cellStyle.margin = new RectOffset(1, 1, 1, 1);
+        
         for (int row = 0; row < gridData.Count; row++)
         {
             EditorGUILayout.BeginHorizontal();
 
             for (int col = 0; col < gridData[row].Count; col++)
             {
-                GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
-                buttonStyle.normal.background = GetTextureForCellType(gridData[row][col].cellType);
+                CellType currentType = gridData[row][col].cellType;
+                Color originalColor = GUI.color;
+            
+                // 设置按钮颜色
+                GUI.color = colorMap.ContainsKey(currentType) ? colorMap[currentType] : Color.yellow;
+                // GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
+                // buttonStyle.normal.background = GetTextureForCellType(gridData[row][col].cellType);
 
-                if (GUILayout.Button($"", buttonStyle, GUILayout.Width(30), GUILayout.Height(30)))
+                if (GUILayout.Button($"", cellStyle, GUILayout.Width(30), GUILayout.Height(30)))
                 {
                     // 点击切换类型
                     CellType selectedType =
@@ -272,16 +293,38 @@ public class GridEditor : EditorWindow
         }
     }
     
+    // private Texture2D MakeTex(int width, int height, Color col)
+    // {
+    //     Color[] pix = new Color[width * height];
+    //     for (int i = 0; i < pix.Length; i++)
+    //     {
+    //         pix[i] = col;
+    //     }
+    //     Texture2D result = new Texture2D(width, height);
+    //     result.SetPixels(pix);
+    //     result.Apply();
+    //     return result;
+    // }
+    
     private Texture2D MakeTex(int width, int height, Color col)
     {
+        Texture2D result = new Texture2D(width, height);
+    
+        // 创建像素数组
         Color[] pix = new Color[width * height];
         for (int i = 0; i < pix.Length; i++)
         {
             pix[i] = col;
         }
-        Texture2D result = new Texture2D(width, height);
+    
         result.SetPixels(pix);
         result.Apply();
+    
+        // 设置纹理参数以提高兼容性
+        result.wrapMode = TextureWrapMode.Clamp;
+        result.filterMode = FilterMode.Point;
+        result.hideFlags = HideFlags.HideAndDontSave;
+    
         return result;
     }
     
@@ -301,14 +344,27 @@ public class GridEditor : EditorWindow
         
             // 确保目录存在
             string directory = Path.GetDirectoryName(fileName);
-            System.IO.Directory.CreateDirectory(directory);
+            Directory.CreateDirectory(directory);
         
             // 保存数据
-            LevelGridLoader.SaveGridToJson(gridData, gridRows, gridCols, nameWithoutExtension);
+            var json = JsonConvert.SerializeObject(gridData);
+            
+            string directory1= Application.streamingAssetsPath + "/GridData/";
+            Directory.CreateDirectory(directory1);
+        
+            string filePath = Path.Combine(directory1, $"{fileName}.json");
+            File.WriteAllText(filePath, json);
+            Debug.Log($"网格数据已保存到: {filePath}");
         
             AssetDatabase.Refresh();
             Debug.Log($"网格数据已导出到: {fileName}");
         }
+    }
+
+    private void TestJson()
+    {
+        var a = JsonConvert.SerializeObject(gridData);
+        Debug.Log(a);
     }
 
 }
