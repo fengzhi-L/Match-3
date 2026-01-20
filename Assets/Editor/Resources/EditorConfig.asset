@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eec16031ad79be64bbf6b01c8bdc1b2d, type: 3}
   m_Name: EditorConfig
   m_EditorClassIdentifier: 
-  cellSpriteConfig: {fileID: 0}
+  cellSpriteConfig: {fileID: 11400000, guid: 93363fa5d1bd63742a8a658323be975e, type: 2}

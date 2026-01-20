@@ -15,6 +15,8 @@ public class LevelData : ScriptableObject
     public int gridColumn = 8;
     [Range(4, 12)] 
     public int gridRow = 8;
+    
+    public List<List<GridCell>> PredefinedGrid = new();
 
     [Header("游戏目标")] 
     public int targetScore = 1000;
