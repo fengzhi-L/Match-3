@@ -34,17 +34,18 @@ public class GameGridSystem : AbstractSystem, IGameGridSystem
         var currentLevel = this.GetModel<IUserModel>().currentLevel.Value;
         this.GetModel<ILevelModel>().SetLevelData(currentLevel);
         var levelData = this.GetModel<ILevelModel>().currentLevelData;
-        var grid = this.GetModel<IGameGridModel>().currentGrid;
-        grid.Clear();
-        for (var rowIndex = 0; rowIndex < levelData.gridRow; rowIndex++)
-        {
-            var row = new List<GridCell>();
-            for (var colIndex = 0; colIndex < levelData.gridColumn; colIndex++)
-            {
-                row.Add(new GridCell(rowIndex, colIndex));
-            }
-            grid.Add(row);
-        }
+        // var grid = this.GetModel<IGameGridModel>().currentGrid;
+        this.GetModel<IGameGridModel>().SetCurrentGrid(LevelGridLoader.LoadConfig("Level_01_Grid.json")); 
+        // grid.Clear();
+        // for (var rowIndex = 0; rowIndex < levelData.gridRow; rowIndex++)
+        // {
+        //     var row = new List<GridCell>();
+        //     for (var colIndex = 0; colIndex < levelData.gridColumn; colIndex++)
+        //     {
+        //         row.Add(new GridCell(rowIndex, colIndex));
+        //     }
+        //     grid.Add(row);
+        // }
     }
 
     public void FillGridWithCell(CellType type)
@@ -54,7 +55,8 @@ public class GameGridSystem : AbstractSystem, IGameGridSystem
         {
             foreach (var cell in rowCells)
             {
-                cell.cellType = type;
+                // cell.cellType = type;
+                Debug.Log(cell.cellType);
             }
         }
         Debug.Log("13");

@@ -11,4 +11,9 @@ public class GameGridModel : AbstractModel, IGameGridModel
         currentGrid = new ();
         currentFruitGrid = new();
     }
+
+    public void SetCurrentGrid(List<List<GridCell>> grid)
+    {
+        currentGrid = grid;
+    }
 }
