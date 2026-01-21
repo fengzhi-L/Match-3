@@ -56,8 +56,6 @@ public class LoadingController : MonoBehaviour, IController
         // 暂不允许场景激活
         _asyncOperation.allowSceneActivation = false;
 
-        yield return new WaitForSeconds(minLoadTime);
-
         while (!_asyncOperation.isDone)
         {
             // 将进度限制在0-1之间，其中0.9对应100%（因为Unity内部进度最大约0.9）
