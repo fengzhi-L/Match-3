@@ -9,7 +9,7 @@ public class LoginController : MonoBehaviour, IController
     public void OnGuestButtonClicked()
     {
         this.GetModel<IUserModel>().InitializeAsGuest();
-        this.SendCommand(new LoadSceneAsyncCommand("Level01"));
+        this.SendCommand(new LoadSceneAsyncCommand("Main"));
         loginPanel.SetActive(false);
     }
     
