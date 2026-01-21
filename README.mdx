@@ -1,3 +1,371 @@
 ---
-sidebar_label: "ReadMe"
+sidebar_label: "项目概述"
 ---
+
+# 项目概述
+
+这是一个使用 Unity 开发的消消乐（Match-3）游戏项目。游戏核心玩法是玩家通过交换相邻的水果方块，使三个或更多相同水果连成一线来消除得分。
+
+## 项目架构
+
+### 核心架构模式
+
+项目采用 **MVC (Model-View-Controller)** 架构模式结合 QFramework 和 Unity 的组件系统：
+
+* **Model 层**：游戏数据和业务逻辑
+    - `GridSystem`：棋盘网格系统，管理方块位置和状态
+    - `MatchDetector`：匹配检测系统，识别可消除的水果组合
+    - `ScoreSystem`：分数系统，计算和管理玩家得分
+    - `LevelData`：关卡数据，定义关卡目标、棋盘大小、可用水果类型等
+
+* **View 层**：UI 和游戏对象显示
+    - `FruitView`：水果方块的视觉表现
+    - `BoardView`：棋盘的视觉呈现
+    - `UIManager`：UI 界面管理器（分数、关卡信息、菜单等）
+    - `EffectManager`：特效管理器（消除动画、粒子效果等）
+
+* **Controller 层**：用户输入和游戏流程控制
+    - `GameController`：游戏主控制器，协调各个系统
+    - `InputHandler`：处理玩家输入（触摸/鼠标交换水果）
+    - `LevelController`：关卡流程控制
+
+### 目录结构划分
+
+```tree
+Assets/
+├── Scripts/
+│   ├── Controllers/              # 控制器
+│   │   ├── GameController.cs
+│   │   ├── GridController.cs
+│   │   ├── MatchDetector.cs
+│   │   └── ScoreController.cs
+│   ├── Models/              # 共享的数据模型
+│   │   ├── FruitModel.cs
+│   │   ├── LevelModel.cs
+│   │   └── GridCellModel.cs
+│   ├── Systems/              # 系统层
+│   │   ├── FruitSystem.cs
+│   │   ├── BoardSystem.cs
+│   │   └── UIManageSystem.cs
+│   ├── Commands/       # 命令
+│   │   ├── MatchFoundCommand.cs
+│   │   └── ScoreChangeCommand.cs
+│   ├── Events/             # 事件
+│   │   ├── MatchFoundEvent.cs
+│   │   ├── ScoreChangedEvent.cs
+│   │   └── LevelCompleteEvent.cs
+│   └── Utils/            # 配置文件
+│       └── GameConfig.cs
+├── Prefabs/
+│   ├── Fruits/            # 水果预制体
+│   ├── Effects/           # 特效预制体
+│   └── UI/                # UI 预制体
+├── Scenes/
+│   ├── MainMenu.unity
+│   ├── GamePlay.unity
+│   └── LevelSelect.unity
+├── Resources/
+│   ├── Sprites/           # 精灵图片
+│   │   ├── Fruits/        # 水果图片
+│   │   ├── UI/            # UI 图片
+│   │   └── Background/    # 背景图片
+│   ├── Audio/             # 音频文件
+│   │   ├── Music/         # 背景音乐
+│   │   └── SFX/           # 音效
+│   └── Data/              # 数据文件
+│       └── Levels/        # 关卡配置
+├── Materials/             # 材质
+├── Animations/            # 动画
+└── Fonts/                 # 字体
+```
+
+## 核心系统设计
+
+### 网格系统(GridSystem)
+
+负责管理棋盘的逻辑结构：
+
+- 使用二维数组存储网格数据 GridCell[,]
+- 处理方块交换逻辑
+- 检测空位并触发方块下落
+- 生成新的随机方块
+
+关键方法：
+
+- `SwapFruits(Vector2Int pos1, Vector2Int pos2)`: 交换两个位置的水果
+- `DetectEmptyCells()`: 检测空位
+- `FillGrid()`: 填充空位
+- `GetNeighbors(Vector2Int pos)`: 获取相邻方块
+
+### 匹配检测系统 (MatchDetector)
+
+识别可消除的水果组合：
+
+- 检测横向和纵向的三连或更多匹配
+- 支持特殊形状匹配（L型、T型等生成特殊水果）
+- 返回所有匹配的方块位置
+
+关键方法：
+
+- `FindMatches()`: 查找所有匹配
+- `CheckHorizontalMatch(Vector2Int pos)`: 检查横向匹配
+- `CheckVerticalMatch(Vector2Int pos)`: 检查纵向匹配
+- `CheckSpecialPattern(List<Vector2Int> matches)`: 检查特殊模式
+
+### 游戏流程
+
+标准游戏循环：
+
+- **玩家输入** → 选择并交换两个相邻水果
+- **验证移动** → 检查交换后是否产生匹配
+- **消除匹配** → 播放动画并移除匹配的水果
+- **更新分数** → 根据消除数量计算分数
+- **方块下落** → 上方方块下落填补空位
+- **生成新方块** → 顶部生成新的随机方块
+- **检测连锁** → 重复步骤 3-6 直到无新匹配
+- **检查结束条件** → 判断是否达成目标或失败
+
+### 对象池模式
+
+使用对象池管理水果方块和特效，提高性能：
+
+- 预先创建一定数量的对象
+- 重用已销毁的对象而非频繁创建销毁
+- 减少 GC 压力
+
+## 开发前准备
+
+### 需要的资源清单
+
+**1. 水果精灵图 (Sprites/Fruits/)**
+  - `apple.png` - 苹果（红色）
+  - `banana.png`- 香蕉（黄色）
+  - `grape.png` - 葡萄（紫色）
+  - `orange.png` - 橙子（橙色）
+  - `strawberry.png` - 草莓（粉色）
+  - `watermelon.png` - 西瓜（绿色）
+  - `lemon.png` - 柠檬（黄绿色）
+
+建议尺寸：256x256 像素，PNG 格式，透明背景
+
+**2. 特殊水果（道具）**
+  - `bomb.png` - 炸弹（消除周围 3x3 区域）
+  - `horizontal_striped.png` - 横向条纹（消除整行）
+  - `vertical_striped.png` - 纵向条纹（消除整列）
+  - `rainbow.png` - 彩虹糖（消除所有同类型水果）
+
+**3. UI 资源 (Sprites/UI/)**
+  - `button_normal.png` / `button_pressed.png` - 按钮状态
+  - `panel_background.png` - 面板背景
+  - `progress_bar.png` / `progress_fill.png` - 进度条
+  - `star_empty.png` / `star_filled.png` - 星级评价
+  - `icon_moves.png` - 移动次数图标
+  - `icon_score.png` - 分数图标
+
+**4. 背景资源 (Sprites/Background/)**
+  - `game_background.png` - 游戏主背景（分辨率 1920x1080）
+  - `menu_background.png` - 菜单背景
+  - `board_frame.png` - 棋盘边框
+
+**5. 音频资源 (Audio/)**
+
+**音乐 (Music/)：**
+
+  - `menu_bgm.mp3` - 菜单背景音乐
+  - `game_bgm.mp3` - 游戏背景音乐
+
+**音效 (SFX/)：**
+
+  - `swap.wav` - 交换水果音效
+  - `match.wav` - 匹配消除音效
+  - `combo.wav` - 连锁消除音效
+  - `button_click.wav` - 按钮点击音效
+  - `level_complete.wav` - 关卡完成音效
+  - `level_fail.wav` - 关卡失败音效
+  - `special_fruit.wav` - 特殊水果生成音效
+
+**6. 粒子特效**
+
+  - 消除特效（星星、光芒）
+  - 得分飘字特效
+  - 连锁爆炸特效
+
+**7. 字体文件 (Fonts/)**
+
+  - 中文字体（支持简体中文显示）
+  - 推荐使用：思源黑体或阿里巴巴普惠体
+
+### Unity 项目配置
+
+**推荐 Unity 版本**：Unity 2021.3 LTS 或更高
+
+**必需的包 (Package Manager)：**
+
+  - TextMeshPro - 文本渲染
+  - 2D Sprite - 2D 精灵支持
+  - 2D Animation（可选）- 骨骼动画
+  - DOTween（可选）- 动画插件，通过 Asset Store 安装
+
+**项目设置：**
+
+  - Platform: Android / iOS / PC
+  - 分辨率：16:9 (1920x1080)
+  - Scripting Backend: IL2CPP（移动平台）
+
+## 常用开发命令
+
+由于这是 Unity 项目，大部分操作在 Unity Editor 中完成，但以下命令在命令行中有用：
+
+### 运行测试
+```
+# 如果配置了 Unity Test Framework
+Unity -runTests -batchmode -projectPath . -testResults ./test-results.xml
+```
+
+### 构建项目
+```
+# Android 构建示例
+Unity -quit -batchmode -projectPath . -buildTarget Android -executeMethod BuildScript.BuildAndroid
+```
+
+### 代码规范检查（如果使用）
+```
+# 如果使用 ReSharper 或其他 C# linter
+dotnet format
+```
+
+## 开发要点
+
+### ScriptableObject 用于数据配置
+
+使用 ScriptableObject 存储关卡配置和游戏设定：
+
+```csharp
+[CreateAssetMenu(fileName = "Level", menuName = "Game/Level Data")]
+public class LevelData : ScriptableObject
+{
+    public int levelNumber;
+    public int gridWidth;
+    public int gridHeight;
+    public int targetScore;
+    public int movesLimit;
+    public FruitType[] availableFruits;
+}
+```
+
+### 命令和事件系统
+
+使用 QFramework的命令和事件 或 C# 事件或 UnityEvent 实现松耦合：
+
+  - `OnMatchFound` - 发现匹配时触发
+  - `OnScoreChanged` - 分数变化时触发
+  - `OnLevelComplete` - 关卡完成时触发
+  - `OnGameOver` - 游戏结束时触发
+
+### 状态机管理游戏状态
+
+游戏状态：
+
+  - `Idle` - 等待玩家操作
+  - `Swapping` - 水果交换中
+  - `Matching` - 匹配检测和消除
+  - `Falling` - 方块下落
+  - `Filling` - 生成新方块
+  - `GameOver` - 游戏结束
+
+### 性能优化建议
+
+  - 使用对象池避免频繁实例化
+  - 减少 `Update()` 中的计算，使用事件驱动
+  - 使用 `SetActive(false)` 而非 `Destroy()` 管理对象
+  - 图集（Sprite Atlas）打包精灵减少 DrawCall
+  - 避免在循环中使用 `GetComponent`，缓存组件引用
+
+## 关卡设计参考
+
+### 基础关卡（1-10）
+
+  - 网格大小：8x8
+  - 水果类型：5 种
+  - 目标：达到目标分数
+  - 移动次数：30-40 次
+
+### 中级关卡（11-30）
+
+  - 网格大小：9x9
+  - 水果类型：6 种
+  - 特殊方块：障碍物（需要多次消除）
+  - 目标：达到目标分数 + 消除特定水果数量
+  - 移动次数：25-35 次
+
+### 高级关卡（31+）
+
+  - 网格大小：10x10 或不规则形状
+  - 水果类型：7 种
+  - 特殊机制：传送门、冰冻方块等
+  - 目标：多重目标
+  - 移动次数：20-30 次
+
+## 调试技巧
+
+### 调试工具
+  - Unity 的 Gizmos 绘制网格辅助线
+  - Debug 模式显示方块索引坐标
+  - 作弊命令（开发时）：跳过关卡、无限移动、自动消除
+
+### 日志规范
+
+```csharp
+Debug.Log($"[GridSystem] 交换水果: {pos1} <-> {pos2}");
+Debug.LogWarning($"[MatchDetector] 未找到匹配");
+Debug.LogError($"[GameController] 关卡数据为空");
+```
+
+## Git 工作流建议
+
+### 忽略文件
+
+确保 `.gitignore` 包含：
+
+  - `/Library/`
+  - `/Temp/`
+  - `/Obj/`
+  - `/Build/`
+  - `*.csproj`
+  - `*.unityproj`
+  - `*.sln`
+  - `*.user`
+  - `*.pidb`
+  - `*.userprefs`
+
+### 分支策略
+
+  - `main` - 稳定版本
+  - `develop` - 开发分支
+  - `feature/*` - 功能分支
+  - `bugfix/*` - 修复分支
+
+## 关键技术实现参考
+
+### 匹配算法核心逻辑
+
+从每个方块位置开始，分别向左右、上下扩展，统计连续相同类型的数量。如果横向或纵向连续数量 ≥ 3，则标记为匹配。
+
+### 方块下落算法
+
+从底部向顶部遍历每一列，遇到空位时，将上方最近的非空方块移动到该位置，重复直到该列无空位。
+
+### 连锁反应处理
+
+在一轮消除和下落完成后，再次执行匹配检测。如果检测到新匹配，递归执行消除流程。连锁次数可用于计算额外得分倍数。
+
+## 扩展功能建议
+
+可选的进阶功能：
+
+  - 每日挑战关卡
+  - 好友排行榜
+  - 成就系统
+  - 商店系统（购买道具、额外移动次数）
+  - 多语言支持
+  - 云存档（保存进度到服务器）
