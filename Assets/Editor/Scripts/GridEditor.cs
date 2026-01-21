@@ -52,10 +52,10 @@ public class GridEditor : EditorWindow
     private void InitializeGrid(int rows, int cols)
     {
         gridData = new List<List<GridCell>>();
-        for (int row = 0; row < rows; row++)
+        for (int row = rows - 1; row >= 0; row--)
         {
             var rowData = new List<GridCell>();
-            for (int col = 0; col < cols; col++)
+            for (int col = cols - 1; col >= 0; col--)
             {
                 rowData.Add(new GridCell(CellType.BaseBlock, row, col));
             }
@@ -150,11 +150,11 @@ public class GridEditor : EditorWindow
         GUIStyle cellStyle = new GUIStyle(GUI.skin.button);
         cellStyle.margin = new RectOffset(1, 1, 1, 1);
         
-        for (int row = 0; row < gridData.Count; row++)
+        for (int row = gridData.Count - 1; row >=0; row--)
         {
             EditorGUILayout.BeginHorizontal();
 
-            for (int col = 0; col < gridData[row].Count; col++)
+            for (int col = gridData[row].Count - 1; col >=0; col--)
             {
                 CellType currentType = gridData[row][col].cellType;
                 Color originalColor = GUI.color;
