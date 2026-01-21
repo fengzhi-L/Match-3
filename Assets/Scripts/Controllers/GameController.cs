@@ -7,6 +7,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour, IController
 {
     private List<List<FruitItem>> _fruitGrid;
+    private List<List<GridCell>> _grid;
     private LevelData _currentLevel;
 
     private void Awake()
@@ -17,6 +18,7 @@ public class GameController : MonoBehaviour, IController
     private void Start()
     {
         _fruitGrid = this.GetModel<IFruitModel>().fruitGrid;
+        _grid = this.GetModel<IGameGridModel>().currentGrid;
         _currentLevel = this.GetModel<ILevelModel>().currentLevelData;
         
         this.RegisterEvent<FruitSelectedEvent>(e => { OnFruitSelected(e.FruitItem); });
@@ -200,7 +202,7 @@ public class GameController : MonoBehaviour, IController
         {
             for (var row = 0; row < _currentLevel.gridRow; row++)
             {
-                if (_fruitGrid[row][col] == null)
+                if (_fruitGrid[row][col] == null && _grid[row][col].cellType != CellType.Empty)
                 {
                     // 找到了空位，现在从上方（更高 row）找最近的水果
                     int sourceRow = row + 1;
@@ -233,7 +235,7 @@ public class GameController : MonoBehaviour, IController
         {
             for (var row = 0; row < _currentLevel.gridRow; row++)
             {
-                if (_fruitGrid[row][col] == null)
+                if (_fruitGrid[row][col] == null && _grid[row][col].cellType != CellType.Empty)
                 {
                     this.SendCommand(new GenerateFruitCommand(row, col));
                     _fruitGrid[row][col] = this.GetModel<IFruitModel>().newFruit;
