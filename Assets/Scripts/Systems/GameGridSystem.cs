@@ -12,7 +12,6 @@ public class GameGridSystem : AbstractSystem, IGameGridSystem
         this.GetModel<IUserModel>().currentLevel.Register(level =>
         {
             SpawnGrid();
-            FillGridWithCell(CellType.BaseBlock);
             SpawnFruitGrid();
             // 简单方案：重新生成棋盘
             while (DetectAllMatches().Count > 0)
@@ -33,34 +32,7 @@ public class GameGridSystem : AbstractSystem, IGameGridSystem
     {
         var currentLevel = this.GetModel<IUserModel>().currentLevel.Value;
         this.GetModel<ILevelModel>().SetLevelData(currentLevel);
-        var levelData = this.GetModel<ILevelModel>().currentLevelData;
-        // var grid = this.GetModel<IGameGridModel>().currentGrid;
         this.GetModel<IGameGridModel>().SetCurrentGrid(LevelGridLoader.LoadConfig("Level_01_Grid.json")); 
-        // grid.Clear();
-        // for (var rowIndex = 0; rowIndex < levelData.gridRow; rowIndex++)
-        // {
-        //     var row = new List<GridCell>();
-        //     for (var colIndex = 0; colIndex < levelData.gridColumn; colIndex++)
-        //     {
-        //         row.Add(new GridCell(rowIndex, colIndex));
-        //     }
-        //     grid.Add(row);
-        // }
-    }
-
-    public void FillGridWithCell(CellType type)
-    {
-        var grid = this.GetModel<IGameGridModel>().currentGrid;
-        foreach (var rowCells in grid)
-        {
-            foreach (var cell in rowCells)
-            {
-                // cell.cellType = type;
-                Debug.Log(cell.cellType);
-            }
-        }
-        Debug.Log("13");
-        
         this.SendEvent<CellPrefabChangedEvent>();
     }
     
