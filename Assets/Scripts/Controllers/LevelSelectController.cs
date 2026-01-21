@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class LevelSelectController : MonoBehaviour, IController
 {
+    [SerializeField] private GameObject levelSelectPanel;
+    
     [Serializable]
     public struct ButtonPlayerPrefs
     {
@@ -29,7 +31,8 @@ public class LevelSelectController : MonoBehaviour, IController
 
     public void OnButtonClicked(string level)
     {
-        SceneManager.LoadScene(level);
+        this.SendCommand(new LoadSceneAsyncCommand(level));
+        levelSelectPanel.SetActive(false);
     }
 
     public IArchitecture GetArchitecture()
