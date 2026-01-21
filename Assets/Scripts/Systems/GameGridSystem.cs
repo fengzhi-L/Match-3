@@ -43,17 +43,24 @@ public class GameGridSystem : AbstractSystem, IGameGridSystem
     {
         var levelData = this.GetModel<ILevelModel>().currentLevelData;
         var fruitGrid = this.GetModel<IGameGridModel>().currentFruitGrid;
+        var grid = this.GetModel<IGameGridModel>().currentGrid;
         fruitGrid.Clear();
-        for (var rowIndex = 0; rowIndex < levelData.gridRow; ++rowIndex)
+        for (var rowIndex = 0; rowIndex < grid.Count; rowIndex++)
         {
             var row = new List<FruitCell>();
-            for (var columIndex = 0; columIndex < levelData.gridColumn; ++columIndex)
+            for (var columnIndex = 0; columnIndex < grid[rowIndex].Count; columnIndex++)
             {
-                var fruitType = levelData.GetRandomFruitType();
-                var item = new FruitCell(fruitType, rowIndex, columIndex);
-                row.Add(item);
+                if (grid[rowIndex][columnIndex].cellType == CellType.Empty)
+                {
+                    row.Add(null);
+                }
+                else
+                {
+                    var fruitType = levelData.GetRandomFruitType();
+                    var item = new FruitCell(fruitType, rowIndex, columnIndex);
+                    row.Add(item);
+                }
             }
-            // 存到列表中
             fruitGrid.Add(row);
         }
     }

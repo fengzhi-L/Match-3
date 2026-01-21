@@ -24,34 +24,41 @@ public class FruitSpawner : MonoBehaviour, IController
     private void RefreshGridView()
     {
         var levelData = this.GetModel<ILevelModel>().currentLevelData;
-        var grid = this.GetModel<IGameGridModel>().currentFruitGrid;
-        var fruitGrid = this.GetModel<IFruitModel>().fruitGrid;
-        fruitGrid.Clear();
+        var fruitGrid = this.GetModel<IGameGridModel>().currentFruitGrid;
+        var fruitItemGrid = this.GetModel<IFruitModel>().fruitGrid;
+        fruitItemGrid.Clear();
         
         var halfWidth = (levelData.gridColumn - 1) / 2f;
         var halfHeight = (levelData.gridRow - 1) / 2f;
 
-        foreach (var rowCells in grid)
+        foreach (var rowCells in fruitGrid)
         {
             var row = new List<FruitItem>();
             foreach (var fruitCell in rowCells)
             {
-                var prefab = prefabConfig.GetPrefab(fruitCell.fruitType);
-                if(prefab == null) continue;
+                if (fruitCell == null)
+                {
+                    row.Add(null);
+                }
+                else
+                {
+                    var prefab = prefabConfig.GetPrefab(fruitCell.fruitType);
+                    if(prefab == null) continue;
 
-                var cellItem = Instantiate(fruitItem, _fruitRoot, false);
-                var bhv = cellItem.GetComponent<FruitItem>();
-                var x = fruitCell.colIndex - halfWidth;
-                var y = fruitCell.rowIndex - halfHeight;
-                var targetPos = new Vector3(x, y, 0);
-                bhv.Initialize(prefabConfig.GetPrefabMap());
-                bhv.SetFruitType(fruitCell.fruitType);
-                bhv.SetPosition(fruitCell.rowIndex, fruitCell.colIndex, targetPos);
+                    var cellItem = Instantiate(fruitItem, _fruitRoot, false);
+                    var bhv = cellItem.GetComponent<FruitItem>();
+                    var x = fruitCell.colIndex - halfWidth;
+                    var y = fruitCell.rowIndex - halfHeight;
+                    var targetPos = new Vector3(x, y, 0);
+                    bhv.Initialize(prefabConfig.GetPrefabMap());
+                    bhv.SetFruitType(fruitCell.fruitType);
+                    bhv.SetPosition(fruitCell.rowIndex, fruitCell.colIndex, targetPos);
 
-                cellItem.transform.localPosition = new Vector3(x, y, 0);
-                row.Add(bhv);
+                    cellItem.transform.localPosition = new Vector3(x, y, 0);
+                    row.Add(bhv);
+                }
             }
-            fruitGrid.Add(row);
+            fruitItemGrid.Add(row);
         }
     }
     
