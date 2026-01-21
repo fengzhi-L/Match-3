@@ -4,22 +4,13 @@ using UnityEngine.SceneManagement;
 
 public class LoginController : MonoBehaviour, IController
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    public GameObject loginPanel;
+    
     public void OnGuestButtonClicked()
     {
         this.GetModel<IUserModel>().InitializeAsGuest();
-        SceneManager.LoadScene(1);
+        this.SendCommand(new LoadSceneAsyncCommand("Level01"));
+        loginPanel.SetActive(false);
     }
     
     public void OnGoogleButtonClicked()
