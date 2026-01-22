@@ -35,8 +35,8 @@ public class EffectSpawner : MonoBehaviour, IController
             maxSize: 100
         );
 
-        this.RegisterEvent<FruitCrushEvent>(e => { OnShowFruitClearEffect(e.Position); });
-        this.RegisterEvent<GetScoreEvent>(e => { OnShowScoreEffect(e.Position, e.Score); });
+        this.RegisterEvent<FruitCrushEvent>(e => { OnShowFruitClearEffect(e.Position); }).UnRegisterWhenGameObjectDestroyed(gameObject);
+        this.RegisterEvent<GetScoreEvent>(e => { OnShowScoreEffect(e.Position, e.Score); }).UnRegisterWhenGameObjectDestroyed(gameObject);
     }
 
     private GameObject CreateFruitClearEffect()

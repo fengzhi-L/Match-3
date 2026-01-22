@@ -18,7 +18,7 @@ public class FruitSpawner : MonoBehaviour, IController
     {
         RefreshGridView();
 
-        this.RegisterEvent<GenerateFruitEvent>(e => { GenerateFruitItem(e.Row, e.Column); });
+        this.RegisterEvent<GenerateFruitEvent>(e => { GenerateFruitItem(e.Row, e.Column); }).UnRegisterWhenGameObjectDestroyed(gameObject);
     }
 
     private void RefreshGridView()

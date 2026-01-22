@@ -22,8 +22,8 @@ public class GameOverController : MonoBehaviour, IController
             star.enabled = false;
         }
 
-        this.RegisterEvent<GameWinEvent>(e => { ShowWin(e.Score, e.StarCount); });
-        this.RegisterEvent<GameLoseEvent>(e => { ShowLose(); });
+        this.RegisterEvent<GameWinEvent>(e => { ShowWin(e.Score, e.StarCount); }).UnRegisterWhenGameObjectDestroyed(gameObject);
+        this.RegisterEvent<GameLoseEvent>(e => { ShowLose(); }).UnRegisterWhenGameObjectDestroyed(gameObject);
     }
 
     public void ShowLose()

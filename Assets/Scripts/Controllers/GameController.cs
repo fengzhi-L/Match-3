@@ -21,9 +21,9 @@ public class GameController : MonoBehaviour, IController
         _grid = this.GetModel<IGameGridModel>().currentGrid;
         _currentLevel = this.GetModel<ILevelModel>().currentLevelData;
         
-        this.RegisterEvent<FruitSelectedEvent>(e => { OnFruitSelected(e.FruitItem); });
-        this.RegisterEvent<FruitUnSelectedEvent>(e => { OnFruitUnSelect(e.FruitItem); });
-        this.RegisterEvent<FruitMoveEvent>(e => { OnFruitMove(e.Delta); });
+        this.RegisterEvent<FruitSelectedEvent>(e => { OnFruitSelected(e.FruitItem); }).UnRegisterWhenGameObjectDestroyed(gameObject);
+        this.RegisterEvent<FruitUnSelectedEvent>(e => { OnFruitUnSelect(e.FruitItem); }).UnRegisterWhenGameObjectDestroyed(gameObject);
+        this.RegisterEvent<FruitMoveEvent>(e => { OnFruitMove(e.Delta); }).UnRegisterWhenGameObjectDestroyed(gameObject);
     }
     
     private void OnFruitSelected(FruitItem item)

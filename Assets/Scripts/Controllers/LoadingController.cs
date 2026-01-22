@@ -29,7 +29,7 @@ public class LoadingController : MonoBehaviour, IController
         
         loadingPanel.SetActive(false);
 
-        this.RegisterEvent<LoadSceneAsyncEvent>(e => { LoadSceneAsync(e.SceneName); });
+        this.RegisterEvent<LoadSceneAsyncEvent>(e => { LoadSceneAsync(e.SceneName); }).UnRegisterWhenGameObjectDestroyed(gameObject);
     }
 
     private void LoadSceneAsync(string sceneName)

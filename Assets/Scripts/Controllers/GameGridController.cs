@@ -29,7 +29,7 @@ public class GameGridController : MonoBehaviour, IController
             gridParent = transform; // 默认自身为父级
         }
 
-        this.RegisterEvent<CellPrefabChangedEvent>(e => { RefreshGridView(); });
+        this.RegisterEvent<CellPrefabChangedEvent>(e => { RefreshGridView(); }).UnRegisterWhenGameObjectDestroyed(gameObject);
         
         RefreshGridView();
     }
