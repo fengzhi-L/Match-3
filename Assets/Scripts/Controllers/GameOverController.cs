@@ -63,7 +63,7 @@ public class GameOverController : MonoBehaviour, IController
 
         if (starCount < stars.Length)
         {
-            for (var i = 0; i < starCount; i++)
+            for (var i = 0; i <= starCount; i++)
             {
                 stars[i].enabled = true;
 

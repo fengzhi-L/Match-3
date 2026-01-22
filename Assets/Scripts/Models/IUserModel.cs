@@ -7,6 +7,7 @@ public interface IUserModel : IModel
     public string displayName { get; set; }
     public bool isGuest { get; set; } 
     BindableProperty<int> currentLevel { get; } 
+    BindableProperty<int> currentScore { get; } 
     public int totalScore { get; set; } 
     public Dictionary<string, int> inventory { get; set; }  // 道具
     void InitializeAsGuest();

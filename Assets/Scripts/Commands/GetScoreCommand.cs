@@ -14,6 +14,7 @@ public class GetScoreCommand : AbstractCommand
 
     protected override void OnExecute()
     {
+        this.GetModel<IUserModel>().currentScore.Value += _score;
         this.SendEvent<GetScoreEvent>(new() { Position = _pos, Score = _score });
     }
 }

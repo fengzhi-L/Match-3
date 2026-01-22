@@ -8,6 +8,7 @@ public class UserModel : AbstractModel,IUserModel
     public string displayName { get; set; }
     public bool isGuest { get; set; }
     public BindableProperty<int> currentLevel { get; } = new(1);
+    public BindableProperty<int> currentScore { get; } = new(0);
     public int totalScore { get; set; }
     public Dictionary<string, int> inventory { get; set; }
 

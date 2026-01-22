@@ -10,33 +10,82 @@ public class InGameUIController : MonoBehaviour , IController
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private TextMeshProUGUI totalScoreText;
     [SerializeField] private TextMeshProUGUI targetScoreText;
-    [SerializeField] private Image star0Image;
-    [SerializeField] private Image star1Image;
-    [SerializeField] private Image star2Image;
-    [SerializeField] private Image star3Image;
+    [SerializeField] private Image[] stars;
+    private LevelData _levelData;
+    private int _starCount;
 
     private void Start()
     {
-        targetScoreText.text = this.GetModel<ILevelModel>().currentLevelData.targetScore.ToString();
+        _levelData = this.GetModel<ILevelModel>().currentLevelData;
+        targetScoreText.text = _levelData.targetScore.ToString();
         totalScoreText.text = "0";
-        levelText.text = this.GetModel<ILevelModel>().currentLevelData.levelName;
-        remainingText.text = this.GetModel<ILevelModel>().currentLevelData.movesLimit.ToString();
-        star1Image.gameObject.SetActive(false);
-        star2Image.gameObject.SetActive(false);
-        star3Image.gameObject.SetActive(false);
+        levelText.text = _levelData.levelName;
+        remainingText.text = _levelData.movesLimit.ToString();
+        
+        // 初始只显示0星
+        for (var i = 1; i < stars.Length; i++)
+        {
+            stars[i].enabled = false;
+        }
 
         this.RegisterEvent<FruitMoveSuccessEvent>(e =>
         {
             if (int.TryParse(remainingText.text, out var moveleft))
             {
                 remainingText.text = (moveleft - 1).ToString();
+
+                if (moveleft - 1 != 0) return;
+
+                if (this.GetModel<IUserModel>().currentScore.Value >= _levelData.targetScore)
+                {
+                    OnGameWin(this.GetModel<IUserModel>().currentScore.Value);
+                }
+                else
+                {
+                    OnGameLose();
+                }
             }
         }).UnRegisterWhenGameObjectDestroyed(gameObject);
+
+        this.RegisterEvent<GetScoreEvent>(e => { UpdateScore(this.GetModel<IUserModel>().currentScore.Value); })
+            .UnRegisterWhenGameObjectDestroyed(gameObject);
     }
 
     public void UpdateScore(int score)
     {
         totalScoreText.text = score.ToString();
+
+        var visibleStar = 0;
+
+        if (score >= _levelData.score1Star && score < _levelData.score2Star)
+        {
+            visibleStar = 1;
+        }
+        else if(score >= _levelData.score2Star && score < _levelData.score3Star)
+        {
+            visibleStar = 2;
+        }
+        else if (score >= _levelData.score3Star)
+        {
+            visibleStar = 3;
+        }
+
+        for (var i = 0; i < stars.Length; i++)
+        {
+            stars[i].enabled = i == visibleStar;
+        }
+
+        _starCount = visibleStar;
+    }
+
+    public void OnGameWin(int score)
+    {
+        this.SendCommand(new GameWinCommand(score, _starCount));
+    }
+
+    public void OnGameLose()
+    {
+        this.SendCommand(new GameLoseCommand());
     }
 
     public IArchitecture GetArchitecture()
