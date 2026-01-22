@@ -81,12 +81,12 @@ public class GameOverController : MonoBehaviour, IController
 
     public void OnReplayClicked()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        this.SendCommand(new LoadSceneAsyncCommand(SceneManager.GetActiveScene().name));
     }
 
     public void OnDoneClicked()
     {
-        SceneManager.LoadScene("LevelSelect");
+        this.SendCommand(new LoadSceneAsyncCommand("LevelSelect"));
     }
 
     public IArchitecture GetArchitecture()
