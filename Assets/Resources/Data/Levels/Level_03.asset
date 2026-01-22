@@ -16,11 +16,11 @@ MonoBehaviour:
   levelName: Level_03
   gridColumn: 7
   gridRow: 7
-  targetScore: 1000
+  targetScore: 3000
   movesLimit: 30
-  score1Star: 0
-  score2Star: 0
-  score3Star: 0
+  score1Star: 1000
+  score2Star: 2000
+  score3Star: 3000
   availableFruits: 00000000010000000200000003000000
-  targetFruitCounts: 
+  targetFruitCounts: 320000003200000032000000
   hasObstacles: 0

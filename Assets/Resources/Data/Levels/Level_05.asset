@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelNumber: 5
   levelName: Level_05
-  gridColumn: 7
-  gridRow: 7
-  targetScore: 1000
+  gridColumn: 8
+  gridRow: 8
+  targetScore: 5000
   movesLimit: 30
-  score1Star: 0
-  score2Star: 0
-  score3Star: 0
-  availableFruits: 00000000010000000200000003000000
-  targetFruitCounts: 
+  score1Star: 3000
+  score2Star: 4000
+  score3Star: 5000
+  availableFruits: 0000000001000000020000000300000004000000
+  targetFruitCounts: 3200000032000000320000003200000032000000
   hasObstacles: 0
