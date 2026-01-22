@@ -91,6 +91,7 @@ public class InGameUIController : MonoBehaviour , IController
 
     public void OnExitClicked()
     {
+        this.SendCommand<PlayButtonClickSoundCommand>();
         gameUIPanel.SetActive(false);
         this.SendCommand(new LoadSceneAsyncCommand("Main"));
     }

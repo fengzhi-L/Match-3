@@ -32,6 +32,7 @@ public class LevelSelectController : MonoBehaviour, IController
     public void OnButtonClicked(int level)
     {
         this.GetModel<IUserModel>().currentLevel.Value = level;
+        this.SendCommand<PlayButtonClickSoundCommand>();
         this.SendCommand(new LoadSceneAsyncCommand($"Level{level}"));
         levelSelectPanel.SetActive(false);
     }

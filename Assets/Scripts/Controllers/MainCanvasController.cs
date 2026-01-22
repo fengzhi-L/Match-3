@@ -7,6 +7,7 @@ public class MainCanvasController : MonoBehaviour, IController
 
     public void OnLevelSelectClicked()
     {
+        this.SendCommand<PlayButtonClickSoundCommand>();
         this.SendCommand(new LoadSceneAsyncCommand("LevelSelect"));
         mainPanel.SetActive(false);
     }

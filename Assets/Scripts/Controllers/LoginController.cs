@@ -9,6 +9,7 @@ public class LoginController : MonoBehaviour, IController
     
     public void OnGuestButtonClicked()
     {
+        this.SendCommand<PlayButtonClickSoundCommand>();
         this.GetModel<IUserModel>().InitializeAsGuest();
         this.SendCommand(new LoadSceneAsyncCommand("Main"));
         loginPanel.SetActive(false);
@@ -16,6 +17,7 @@ public class LoginController : MonoBehaviour, IController
     
     public void OnGoogleButtonClicked()
     {
+        this.SendCommand<PlayButtonClickSoundCommand>();
         tipPanel.SetActive(true);
         Debug.Log("谷歌登录未实现");
     }

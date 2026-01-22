@@ -67,6 +67,7 @@ public class GameController : MonoBehaviour, IController
 
         if (matches.Count == 0)
         {
+            this.SendCommand<PlayNoMatchSoundCommand>();
             Exchange(a, b);
             yield return new WaitForSeconds(0.3f);
         }
@@ -187,6 +188,8 @@ public class GameController : MonoBehaviour, IController
                 this.SendCommand(new FruitCrushCommand(item.fruitType, item.transform.localPosition));
                 this.SendCommand(new GetScoreCommand(item.transform.localPosition, 10)); // 写死10分
             }
+            
+            this.SendCommand<PlayDestroySoundCommand>();
 
             FallDown();
 

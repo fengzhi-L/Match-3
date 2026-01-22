@@ -82,12 +82,14 @@ public class GameOverController : MonoBehaviour, IController
 
     public void OnReplayClicked()
     {
+        this.SendCommand<PlayButtonClickSoundCommand>();
         gameUIPanel.SetActive(false);
         this.SendCommand(new LoadSceneAsyncCommand(SceneManager.GetActiveScene().name));
     }
 
     public void OnDoneClicked()
     {
+        this.SendCommand<PlayButtonClickSoundCommand>();
         gameUIPanel.SetActive(false);
         this.SendCommand(new LoadSceneAsyncCommand("LevelSelect"));
     }
