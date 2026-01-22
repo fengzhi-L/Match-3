@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class LoginController : MonoBehaviour, IController
 {
     public GameObject loginPanel;
+    [SerializeField] private GameObject tipPanel;
     
     public void OnGuestButtonClicked()
     {
@@ -15,14 +16,13 @@ public class LoginController : MonoBehaviour, IController
     
     public void OnGoogleButtonClicked()
     {
-        var a = LevelGridLoader.LoadConfig("Level_01_Grid.json");
-        foreach (var b in a)
-        {
-            foreach (var c in b)
-            {
-                Debug.Log(c.cellType);
-            }
-        }
+        tipPanel.SetActive(true);
+        Debug.Log("谷歌登录未实现");
+    }
+
+    public void OnTipPanelClosed()
+    {
+        tipPanel.SetActive(false);
     }
 
     public IArchitecture GetArchitecture()
