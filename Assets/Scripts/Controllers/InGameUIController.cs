@@ -18,7 +18,7 @@ public class InGameUIController : MonoBehaviour , IController
     private void Start()
     {
         targetScoreText.text = this.GetModel<ILevelModel>().currentLevelData.targetScore.ToString();
-        totalScoreText.text = this.GetModel<IUserModel>().totalScore.ToString();
+        totalScoreText.text = "0";
         levelText.text = this.GetModel<ILevelModel>().currentLevelData.levelName;
         remainingText.text = this.GetModel<ILevelModel>().currentLevelData.movesLimit.ToString();
         star1Image.gameObject.SetActive(false);
@@ -31,7 +31,12 @@ public class InGameUIController : MonoBehaviour , IController
             {
                 remainingText.text = (moveleft - 1).ToString();
             }
-        });
+        }).UnRegisterWhenGameObjectDestroyed(gameObject);
+    }
+
+    public void UpdateScore(int score)
+    {
+        totalScoreText.text = score.ToString();
     }
 
     public IArchitecture GetArchitecture()
