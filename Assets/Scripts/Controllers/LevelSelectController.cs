@@ -37,6 +37,12 @@ public class LevelSelectController : MonoBehaviour, IController
         levelSelectPanel.SetActive(false);
     }
 
+    public void OnBackButtonClicked()
+    {
+        this.SendCommand<PlayButtonClickSoundCommand>();
+        this.SendCommand(new LoadSceneAsyncCommand("Main"));
+    }
+
     public IArchitecture GetArchitecture()
     {
         return Match3.Interface;
