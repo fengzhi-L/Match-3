@@ -18,6 +18,9 @@ MonoBehaviour:
   gridRow: 6
   targetScore: 1000
   movesLimit: 30
+  score1Star: 600
+  score2Star: 800
+  score3Star: 1000
   availableFruits: 000000000100000002000000
   targetFruitCounts: 32000000
   hasObstacles: 0

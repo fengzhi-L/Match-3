@@ -456,10 +456,11 @@ MonoBehaviour:
   levelText: {fileID: 666569317}
   totalScoreText: {fileID: 362423707}
   targetScoreText: {fileID: 655669859}
-  star0Image: {fileID: 1525589678}
-  star1Image: {fileID: 505212445}
-  star2Image: {fileID: 1537554471}
-  star3Image: {fileID: 1219808442}
+  stars:
+  - {fileID: 1525589678}
+  - {fileID: 505212445}
+  - {fileID: 1537554471}
+  - {fileID: 1219808442}
 --- !u!1 &362423705
 GameObject:
   m_ObjectHideFlags: 0
@@ -2435,7 +2436,11 @@ MonoBehaviour:
   scoreParent: {fileID: 367097066}
   loseText: {fileID: 97025809}
   scoreText: {fileID: 884011736}
-  stars: []
+  stars:
+  - {fileID: 1328879706}
+  - {fileID: 2090890074}
+  - {fileID: 669999701}
+  - {fileID: 1645675313}
 --- !u!95 &1101003293
 Animator:
   serializedVersion: 5
