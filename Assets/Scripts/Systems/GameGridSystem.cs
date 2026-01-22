@@ -32,7 +32,8 @@ public class GameGridSystem : AbstractSystem, IGameGridSystem
     {
         var currentLevel = this.GetModel<IUserModel>().currentLevel.Value;
         this.GetModel<ILevelModel>().SetLevelData(currentLevel);
-        this.GetModel<IGameGridModel>().SetCurrentGrid(LevelGridLoader.LoadConfig("Level_01_Grid.json")); 
+        var levelData = this.GetModel<ILevelModel>().currentLevelData;
+        this.GetModel<IGameGridModel>().SetCurrentGrid(LevelGridLoader.LoadConfig($"{levelData.levelName}_Grid.json")); 
         this.SendEvent<CellPrefabChangedEvent>();
     }
     

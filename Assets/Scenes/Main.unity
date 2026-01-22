@@ -164,7 +164,7 @@ GameObject:
   m_Component:
   - component: {fileID: 49804412}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: MainPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -290,7 +290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b83c28efe58c4454a97f8d32d88ef7f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelSelectButton: {fileID: 2147244344}
+  mainPanel: {fileID: 49804411}
 --- !u!114 &506353434
 MonoBehaviour:
   m_ObjectHideFlags: 0

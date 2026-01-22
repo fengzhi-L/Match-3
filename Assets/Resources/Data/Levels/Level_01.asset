@@ -17,7 +17,7 @@ MonoBehaviour:
   gridColumn: 7
   gridRow: 6
   targetScore: 1000
-  movesLimit: 30
+  movesLimit: 10
   score1Star: 600
   score2Star: 800
   score3Star: 1000

@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class MainCanvasController : MonoBehaviour, IController
 {
-    [SerializeField] private GameObject levelSelectButton;
+    [SerializeField] private GameObject mainPanel;
 
     public void OnLevelSelectClicked()
     {
         this.SendCommand(new LoadSceneAsyncCommand("LevelSelect"));
+        mainPanel.SetActive(false);
     }
 
     public IArchitecture GetArchitecture()

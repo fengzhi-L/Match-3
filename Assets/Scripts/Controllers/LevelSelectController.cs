@@ -29,9 +29,10 @@ public class LevelSelectController : MonoBehaviour, IController
         }
     }
 
-    public void OnButtonClicked(string level)
+    public void OnButtonClicked(int level)
     {
-        this.SendCommand(new LoadSceneAsyncCommand(level));
+        this.GetModel<IUserModel>().currentLevel.Value = level;
+        this.SendCommand(new LoadSceneAsyncCommand($"Level{level}"));
         levelSelectPanel.SetActive(false);
     }
 
