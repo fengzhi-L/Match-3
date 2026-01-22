@@ -21,6 +21,9 @@ public class LevelData : ScriptableObject
     [Header("游戏目标")] 
     public int targetScore = 1000;
     [Range(5, 50)] public int movesLimit = 30;
+    public int score1Star;
+    public int score2Star;
+    public int score3Star;
 
     [Header("可用水果类型")] 
     public FruitType[] availableFruits = new FruitType[]
