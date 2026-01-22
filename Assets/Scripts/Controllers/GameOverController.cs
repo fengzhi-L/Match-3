@@ -12,6 +12,7 @@ public class GameOverController : MonoBehaviour, IController
     [SerializeField] private GameObject scoreParent;
     [SerializeField] private TextMeshProUGUI loseText;
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private GameObject gameUIPanel;
     [SerializeField] private Image[] stars;
     private void Start()
     {
@@ -81,11 +82,13 @@ public class GameOverController : MonoBehaviour, IController
 
     public void OnReplayClicked()
     {
+        gameUIPanel.SetActive(false);
         this.SendCommand(new LoadSceneAsyncCommand(SceneManager.GetActiveScene().name));
     }
 
     public void OnDoneClicked()
     {
+        gameUIPanel.SetActive(false);
         this.SendCommand(new LoadSceneAsyncCommand("LevelSelect"));
     }
 

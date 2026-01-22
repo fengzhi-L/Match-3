@@ -10,6 +10,7 @@ public class InGameUIController : MonoBehaviour , IController
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private TextMeshProUGUI totalScoreText;
     [SerializeField] private TextMeshProUGUI targetScoreText;
+    [SerializeField] private GameObject gameUIPanel;
     [SerializeField] private Image[] stars;
     private LevelData _levelData;
     private int _starCount;
@@ -86,6 +87,12 @@ public class InGameUIController : MonoBehaviour , IController
     public void OnGameLose()
     {
         this.SendCommand(new GameLoseCommand());
+    }
+
+    public void OnExitClicked()
+    {
+        gameUIPanel.SetActive(false);
+        this.SendCommand(new LoadSceneAsyncCommand("Main"));
     }
 
     public IArchitecture GetArchitecture()
